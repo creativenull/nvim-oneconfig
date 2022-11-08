@@ -825,7 +825,20 @@ nls.setup({
 	sources = {
 		nls.builtins.diagnostics.eslint_d,
 		nls.builtins.formatting.prettier,
-		nls.builtins.formatting.stylua,
+		nls.builtins.formatting.stylua.with({
+			extra_args = {
+				"--column-width",
+				"100",
+				"--line-endings",
+				"Unix",
+				"--indent-width",
+				"2",
+				"--quote-style",
+				"AutoPreferSingle",
+				"--call-parentheses",
+				"None",
+			},
+		}),
 	},
 	on_attach = function(client, bufnr)
 		register_lsp_fmt_keymap("<Leader>lf", client.name, bufnr)
