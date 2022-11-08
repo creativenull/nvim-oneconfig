@@ -12,6 +12,9 @@ local config = {
 		filepath = string.format('%s/site/pack/packer/start/packer.nvim', vim.fn.stdpath 'data'),
 	},
 	undo_dir = string.format('%s/undo', vim.fn.stdpath 'cache'),
+	options = {
+		column_limit = '120',
+	},
 	keymap = {
 		leader = ' ',
 	},
@@ -119,9 +122,7 @@ local function register_lsp_fmt_autosave(name, bufnr)
 		group = config.autocmd.group,
 		buffer = bufnr,
 		callback = function()
-			vim.lsp.buf.format(
-				vim.tbl_extend('force', config.lsp.fmt_opts, { name = name, bufnr = bufnr })
-			)
+			vim.lsp.buf.format(vim.tbl_extend('force', config.lsp.fmt_opts, { name = name, bufnr = bufnr }))
 		end,
 		desc = string.format('Format on save [LSP - %s]', name),
 	})
@@ -213,7 +214,7 @@ vim.opt.path = { '**' }
 vim.opt.wildignore = { '*.git/*', '*node_modules/*', '*vendor/*', '*dist/*', '*build/*' }
 
 -- Editor
-vim.opt.colorcolumn = '120'
+vim.opt.colorcolumn = { config.options.column_limit }
 vim.opt.expandtab = true
 vim.opt.lazyredraw = true
 vim.opt.foldenable = false
@@ -508,9 +509,7 @@ packer.startup(function(use)
 
 			local function has_words_before()
 				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-				return col ~= 0
-					and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s'
-						== nil
+				return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
 			end
 
 			local function feedkey(key, mode)
@@ -767,44 +766,14 @@ local function on_attach(client, bufnr)
 
 	-- LSP Keymaps
 	-- vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action, { desc = "LSP Code Actions", buffer = bufnr })
-	vim.keymap.set(
-		'n',
-		'<Leader>la',
-		'<Cmd>Lspsaga code_action<CR>',
-		{ desc = 'LSP Code Actions', buffer = bufnr }
-	)
-	vim.keymap.set(
-		'n',
-		'<Leader>ld',
-		vim.lsp.buf.definition,
-		{ desc = 'LSP Go-to Definition', buffer = bufnr }
-	)
+	vim.keymap.set('n', '<Leader>la', '<Cmd>Lspsaga code_action<CR>', { desc = 'LSP Code Actions', buffer = bufnr })
+	vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition', buffer = bufnr })
 	-- vim.keymap.set("n", "<Leader>lh", vim.lsp.buf.hover, { desc = "LSP Hover Information", buffer = bufnr })
-	vim.keymap.set(
-		'n',
-		'<Leader>lh',
-		'<Cmd>Lspsaga hover_doc<CR>',
-		{ desc = 'LSP Hover Information', buffer = bufnr }
-	)
+	vim.keymap.set('n', '<Leader>lh', '<Cmd>Lspsaga hover_doc<CR>', { desc = 'LSP Hover Information', buffer = bufnr })
 	-- vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename, { desc = "LSP Rename", buffer = bufnr })
-	vim.keymap.set(
-		'n',
-		'<Leader>lr',
-		'<Cmd>Lspsaga rename<CR>',
-		{ desc = 'LSP Rename', buffer = bufnr }
-	)
-	vim.keymap.set(
-		'n',
-		'<Leader>ls',
-		vim.lsp.buf.signature_help,
-		{ desc = 'LSP Signature Help', buffer = bufnr }
-	)
-	vim.keymap.set(
-		'n',
-		'<Leader>le',
-		vim.diagnostic.setloclist,
-		{ desc = 'LSP Show All Diagnostics', buffer = bufnr }
-	)
+	vim.keymap.set('n', '<Leader>lr', '<Cmd>Lspsaga rename<CR>', { desc = 'LSP Rename', buffer = bufnr })
+	vim.keymap.set('n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
+	vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer = bufnr })
 	vim.keymap.set('n', '<Leader>lw', function()
 		vim.diagnostic.open_float { bufnr = bufnr, scope = 'line' }
 	end, { desc = 'Show LSP Line Diagnostic', buffer = bufnr })
@@ -878,7 +847,7 @@ nls.setup {
 		nls.builtins.formatting.stylua.with {
 			extra_args = {
 				'--column-width',
-				'100',
+				config.options.column_limit,
 				'--line-endings',
 				'Unix',
 				'--indent-width',
