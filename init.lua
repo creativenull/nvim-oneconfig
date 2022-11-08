@@ -612,16 +612,12 @@ packer.startup(function(use)
 	-- Treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
-		commit = "00b42ac6d4c852d34619eaf2ea822266588d75e3",
-		requires = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			commit = "13739a5705d9592cbe7da372576363dc8ea5f723",
-		},
-		after = "nvim-treesitter-textobjects",
+		requires = { "nvim-treesitter/nvim-treesitter-textobjects", opt = true },
 		run = function()
 			require("nvim-treesitter.install").update({ with_sync = true })
 		end,
 		config = function()
+			vim.cmd("packadd nvim-treesitter-textobjects")
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"graphql",
