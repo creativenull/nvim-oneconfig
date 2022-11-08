@@ -406,7 +406,7 @@ packer.startup(function(use)
 	use({
 		"folke/todo-comments.nvim",
 		commit = "530eb3a896e9eef270f00f4baafa102361afc93b",
-		requires = { { "nvim-lua/plenary.nvim", commit = "4b7e52044bbb84242158d977a50c4cbcd85070c7" } },
+		requires = "nvim-lua/plenary.nvim",
 		config = function()
 			require("todo-comments").setup({})
 		end,
@@ -417,9 +417,9 @@ packer.startup(function(use)
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
 		requires = {
-			{ "nvim-lua/plenary.nvim", commit = "4b7e52044bbb84242158d977a50c4cbcd85070c7" },
-			{ "nvim-tree/nvim-web-devicons", commit = "9061e2d355ecaa2b588b71a35e7a11358a7e51e1" }, -- not strictly required, but recommended
-			{ "MunifTanjim/nui.nvim", commit = "d12a6977846b2fa978bff89b439e509320854e10" },
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
 		},
 		config = function()
 			-- If you want icons for diagnostic errors, you'll need to define them somewhere:
@@ -445,7 +445,7 @@ packer.startup(function(use)
 	use({
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.0",
-		requires = { { "nvim-lua/plenary.nvim", commit = "4b7e52044bbb84242158d977a50c4cbcd85070c7" } },
+		requires = "nvim-lua/plenary.nvim",
 		config = function()
 			local t_builtin = require("telescope.builtin")
 
