@@ -79,11 +79,12 @@ end
 ---Reload the config file, this is tightly interoped with packer.nvim
 ---@return nil
 local function reload_config()
-	-- Check if LSP servers are running and terminate if they are
+	-- Check if LSP servers are running and terminate, if running
 	local attached_clients = vim.lsp.get_active_clients()
-
 	if not vim.tbl_isempty(attached_clients) then
 		for _, client in pairs(attached_clients) do
+			-- The exception is null-ls as it does not restart after
+			-- reloading the init.lua file
 			if client.name ~= 'null-ls' then
 				vim.lsp.stop_client(client.id)
 			end
@@ -92,6 +93,8 @@ local function reload_config()
 
 	vim.api.nvim_command 'source $MYVIMRC'
 
+	-- Install any plugins needed to be installed
+	-- and compile to faster boot up
 	require('packer').install()
 	require('packer').compile()
 end
