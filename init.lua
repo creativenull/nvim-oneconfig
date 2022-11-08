@@ -615,12 +615,15 @@ packer.startup(function(use)
 	-- Treesitter
 	use {
 		'nvim-treesitter/nvim-treesitter',
+		-- We make treesitter extenstions optional so we can ensure it's loaded properly
+		-- before we call treesitter setup in `config` below using packadd
 		requires = { 'nvim-treesitter/nvim-treesitter-textobjects', opt = true },
 		run = function()
 			require('nvim-treesitter.install').update { with_sync = true }
 		end,
 		config = function()
 			vim.cmd 'packadd nvim-treesitter-textobjects'
+
 			require('nvim-treesitter.configs').setup {
 				ensure_installed = {
 					'graphql',
