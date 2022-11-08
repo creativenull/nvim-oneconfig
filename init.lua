@@ -415,15 +415,6 @@ packer.startup(function(use)
 		end,
 	}
 
-	use {
-		'folke/todo-comments.nvim',
-		commit = '530eb3a896e9eef270f00f4baafa102361afc93b',
-		requires = 'nvim-lua/plenary.nvim',
-		config = function()
-			require('todo-comments').setup {}
-		end,
-	}
-
 	-- File explorer
 	use {
 		'nvim-neo-tree/neo-tree.nvim',
@@ -678,6 +669,15 @@ packer.startup(function(use)
 		'lukas-reineke/indent-blankline.nvim',
 		config = function()
 			vim.g.indent_blankline_show_first_indent_level = false
+		end,
+	}
+
+	use {
+		'folke/todo-comments.nvim',
+		commit = '530eb3a896e9eef270f00f4baafa102361afc93b',
+		requires = 'nvim-lua/plenary.nvim',
+		config = function()
+			require('todo-comments').setup {}
 		end,
 	}
 
