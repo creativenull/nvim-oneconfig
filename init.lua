@@ -681,6 +681,14 @@ packer.startup(function(use)
 		end,
 	}
 
+	use {
+		'lewis6991/gitsigns.nvim',
+		branch = 'release',
+		config = function()
+			require('gitsigns').setup()
+		end,
+	}
+
 	-- Themes
 	use 'bluz71/vim-moonfly-colors'
 	use {
