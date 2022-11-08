@@ -669,6 +669,13 @@ packer.startup(function(use)
 		end,
 	}
 
+	use {
+		'lukas-reineke/indent-blankline.nvim',
+		config = function()
+			vim.g.indent_blankline_show_first_indent_level = false
+		end,
+	}
+
 	-- Themes
 	use 'bluz71/vim-moonfly-colors'
 	use {
