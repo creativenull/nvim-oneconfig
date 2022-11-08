@@ -45,6 +45,12 @@ local config = {
 	},
 }
 
+-- Requirement check
+if vim.fn.has 'nvim-0.8' == 0 then
+	print 'Neovim >= v0.8 is required for this config'
+	return
+end
+
 -- ============================================================================
 -- Functions (search: FUNC, FUNCTIONS)
 --
