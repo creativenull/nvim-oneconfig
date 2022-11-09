@@ -354,7 +354,7 @@ vim.cmd 'cnoreabbrev Wq wq'
 --     + Add what you copied into the use() function
 --
 --     + If you have to pass options to the plug, then use a table instead
---         Example, for `junegunn/fzf` you need to run the installer
+--         Example, for `windwp/nvim-autopairs` you need to run the installer
 --         so call with:
 --             use({
 --                 "windwp/nvim-autopairs",
@@ -373,10 +373,10 @@ packer.init {
 }
 
 packer.startup(function(use)
-	-- Add your plugins inside this function
-	-- ---
-
 	use { 'wbthomason/packer.nvim', commit = '6afb67460283f0e990d35d229fd38fdc04063e0a' }
+
+	-- Add your list of plugins below
+	-- ---
 
 	use {
 		'folke/which-key.nvim',
