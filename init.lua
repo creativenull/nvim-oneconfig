@@ -283,52 +283,39 @@ vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 
 -- Disable highlights
-vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>')
+vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>', { desc = 'Disable search highlight' })
 
 -- List all buffers
-vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>')
+vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>', { desc = 'Show buffers' })
 
 -- Go to next buffer
-vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>')
-vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>')
+vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>', { desc = 'Next buffer' })
 
 -- Go to previous buffer
-vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>')
-vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>')
+vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>', { desc = 'Previous buffer' })
 
 -- Close the current buffer, and more?
-vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>')
+vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>', { desc = 'Close current buffer' })
 
 -- Close all buffer, except current
-vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
-
--- Move a line of text Alt+[j/k]
-vim.keymap.set('n', '<M-j>', 'mz:m+<CR>`z')
-vim.keymap.set('n', '<M-k>', 'mz:m-2<CR>`z')
-vim.keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]])
-vim.keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
+vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>', { desc = 'Close all buffers except current' })
 
 -- Edit vimrc
-vim.keymap.set('n', '<Leader>ve', '<Cmd>edit $MYVIMRC<CR>')
+vim.keymap.set('n', '<Leader>ve', '<Cmd>edit $MYVIMRC<CR>', { desc = 'Open init.lua' })
 
 -- Source the vimrc to reflect changes
-vim.keymap.set('n', '<Leader>vs', '<Cmd>ConfigReload<CR>')
+vim.keymap.set('n', '<Leader>vs', '<Cmd>ConfigReload<CR>', { desc = 'Reload init.lua' })
 
 -- Reload file
-vim.keymap.set('n', '<Leader>r', '<Cmd>edit!<CR>')
-
--- List all maps
-vim.keymap.set('n', '<Leader>mn', '<Cmd>nmap<CR>')
-vim.keymap.set('n', '<Leader>mv', '<Cmd>vmap<CR>')
-vim.keymap.set('n', '<Leader>mi', '<Cmd>imap<CR>')
-vim.keymap.set('n', '<Leader>mt', '<Cmd>tmap<CR>')
-vim.keymap.set('n', '<Leader>mc', '<Cmd>cmap<CR>')
+vim.keymap.set('n', '<Leader>r', '<Cmd>edit!<CR>', { desc = 'Reload current buffer with the file' })
 
 -- Copy/Paste from sytem clipboard
-vim.keymap.set('v', 'p', [["_dP]])
-vim.keymap.set('v', '<Leader>y', [["+y]])
-vim.keymap.set('n', '<Leader>y', [["+y]])
-vim.keymap.set('n', '<Leader>p', [["+p]])
+vim.keymap.set('v', 'p', [["_dP]], { desc = 'Paste from yanked contents only' })
+vim.keymap.set('v', '<Leader>y', [["+y]], { desc = 'Yank from system clipboard' })
+vim.keymap.set('n', '<Leader>y', [["+y]], { desc = 'Yank from system clipboard' })
+vim.keymap.set('n', '<Leader>p', [["+p]], { desc = 'Paste from system clipboard' })
 
 -- =============================================================================
 -- User Commands (search: CMD, CMDS, COMMANDS)
@@ -390,6 +377,19 @@ packer.startup(function(use)
 	-- ---
 
 	use { 'wbthomason/packer.nvim', commit = '6afb67460283f0e990d35d229fd38fdc04063e0a' }
+
+	use {
+		'folke/which-key.nvim',
+		commit = '61553aeb3d5ca8c11eea8be6eadf478062982ac9',
+		config = function()
+			require('which-key').setup {
+				triggers = { '<Leader>' },
+				window = {
+					border = 'rounded',
+				},
+			}
+		end,
+	}
 
 	use {
 		'kylechui/nvim-surround',
