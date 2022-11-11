@@ -692,13 +692,35 @@ packer.startup(function(use)
 
 	-- Themes
 	use 'bluz71/vim-moonfly-colors'
+	use 'w3barsi/barstrata.nvim'
+	use 'LunarVim/darkplus.nvim'
+	use 'projekt0n/github-nvim-theme'
+	use {
+		'rose-pine/neovim',
+		as = 'rose-pine',
+	}
+	use {
+		'navarasu/onedark.nvim',
+		config = function()
+			require('onedark').setup {
+				style = 'darker',
+			}
+		end,
+	}
+	use {
+		'folke/tokyonight.nvim',
+		config = function()
+			require('tokyonight').setup {
+				style = 'night',
+			}
+		end,
+	}
 	use {
 		'catppuccin/nvim',
 		as = 'catppuccin',
 		config = function()
 			require('catppuccin').setup {
 				flavour = 'mocha',
-				transparent_background = true,
 				custom_highlights = {
 					WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
 				},
@@ -886,7 +908,25 @@ nls.setup {
 -- ============================================================================
 -- Theme (search: THEME, COLOR, COLORSCHEME)
 --
--- Colorscheme always goes last.
+-- Colorscheme and their configuration comes last.
+--
+-- If you want to change some highlights that is separate to the ones provided
+-- by another colorscheme, then you will have to add these changes within the
+-- ColorScheme autocmd.
+--
+-- Example, to change WinSeparator highlight:
+--
+--      vim.api.nvim_create_autocmd('ColorScheme', {
+--      	group = config.autocmd.group,
+--      	callback = function()
+--      		vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = '#eeeeee' })
+--      	end,
+--      })
+--
+--
+-- NOTE: if a colorscheme already has a lua setup() that helps you change
+-- highlights to your desired colors then use that instead of creating a
+-- ColorScheme autocmd. Only use the autocmd route when it's not supported.
 -- ============================================================================
 
 pcall(vim.cmd, 'colorscheme catppuccin')
