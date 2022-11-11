@@ -249,6 +249,7 @@ vim.opt.showtabline = 2
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.laststatus = 3
+vim.opt.fillchars:append { eob = ' ' }
 
 -- =============================================================================
 -- Keymaps (search: KEYS, KEY, KEYMAPS)
