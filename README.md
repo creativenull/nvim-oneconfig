@@ -6,6 +6,8 @@ A clean, organized neovim config written only on one file.
 
 ### Linux/MacOS:
 
+> NOTE: If you have an existing config, you should make a backup of it with: `mv ~/.config/nvim ~/.config/nvim_bk`
+
 ```sh
 git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
 ```
