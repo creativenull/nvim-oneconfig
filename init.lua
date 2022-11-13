@@ -695,38 +695,10 @@ packer.startup(function(use)
 	use 'w3barsi/barstrata.nvim'
 	use 'LunarVim/darkplus.nvim'
 	use 'projekt0n/github-nvim-theme'
-	use {
-		'rose-pine/neovim',
-		as = 'rose-pine',
-	}
-	use {
-		'navarasu/onedark.nvim',
-		config = function()
-			require('onedark').setup {
-				style = 'darker',
-			}
-		end,
-	}
-	use {
-		'folke/tokyonight.nvim',
-		config = function()
-			require('tokyonight').setup {
-				style = 'night',
-			}
-		end,
-	}
-	use {
-		'catppuccin/nvim',
-		as = 'catppuccin',
-		config = function()
-			require('catppuccin').setup {
-				flavour = 'mocha',
-				custom_highlights = {
-					WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
-				},
-			}
-		end,
-	}
+	use 'navarasu/onedark.nvim'
+	use 'folke/tokyonight.nvim'
+	use { 'rose-pine/neovim', as = 'rose-pine' }
+	use { 'catppuccin/nvim', as = 'catppuccin' }
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
@@ -929,4 +901,18 @@ nls.setup {
 -- ColorScheme autocmd. Only use the autocmd route when it's not supported.
 -- ============================================================================
 
-pcall(vim.cmd, 'colorscheme catppuccin')
+pcall(function()
+	-- Theme configuration goes in here
+	-- ---
+
+	-- Example:
+	--
+	--  require('catppuccin').setup {
+	--      flavour = 'mocha',
+	--      custom_highlights = {
+	--          WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
+	--      },
+	--  }
+
+	vim.cmd 'colorscheme barstrata'
+end)
