@@ -437,9 +437,9 @@ packer.startup(function(use)
 		'nvim-neo-tree/neo-tree.nvim',
 		branch = 'v2.x',
 		requires = {
-			'nvim-lua/plenary.nvim',
-			'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-			'MunifTanjim/nui.nvim',
+			{ 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
+			{ 'nvim-tree/nvim-web-devicons', commit = '9061e2d355ecaa2b588b71a35e7a11358a7e51e1' }, -- not strictly required, but recommended
+			{ 'MunifTanjim/nui.nvim', commit = 'd12a6977846b2fa978bff89b439e509320854e10' },
 		},
 		config = function()
 			-- If you want icons for diagnostic errors, you'll need to define them somewhere:
@@ -465,7 +465,7 @@ packer.startup(function(use)
 	use {
 		'nvim-telescope/telescope.nvim',
 		tag = '0.1.0',
-		requires = 'nvim-lua/plenary.nvim',
+		requires = { 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
 		config = function()
 			local t_builtin = require 'telescope.builtin'
 
@@ -484,34 +484,36 @@ packer.startup(function(use)
 	-- LSP + Tools + Debug + Auto-completion
 	use {
 		'neovim/nvim-lspconfig',
+		commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c',
 		requires = {
 			-- Linter/Formatter
-			'jose-elias-alvarez/null-ls.nvim',
+			{ 'jose-elias-alvarez/null-ls.nvim', commit = '07d4ed4c6b561914aafd787453a685598bec510f' },
 			-- Tool installer
-			'williamboman/mason.nvim',
-			'williamboman/mason-lspconfig.nvim',
-			'WhoIsSethDaniel/mason-tool-installer.nvim',
+			{ 'williamboman/mason.nvim', commit = 'd85d71e910d1b2c539d17ae0d47dad48f8f3c8a7' },
+			{ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d50f7a32d2f9057d636418a16843094b7c' },
+			{ 'WhoIsSethDaniel/mason-tool-installer.nvim', commit = '27f61f75a71bb3c2504a17e02b571f79cae43676' },
 			-- UI/Aesthetics
-			'glepnir/lspsaga.nvim',
+			{ 'glepnir/lspsaga.nvim', commit = '201dbbd13d6bafe1144475bbcae9efde224e07ec' },
 		},
 	}
 
 	use {
 		'hrsh7th/nvim-cmp',
+		commit = 'aee40113c2ba3ab158955f233ca083ca9958d6f8',
 		requires = {
 			-- Cmdline completions
-			'hrsh7th/cmp-cmdline',
+			{ 'hrsh7th/cmp-cmdline', commit = '8bc9c4a34b223888b7ffbe45c4fe39a7bee5b74d' },
 			-- Path completions
-			'hrsh7th/cmp-path',
+			{ 'hrsh7th/cmp-path', commit = '91ff86cd9c29299a64f968ebb45846c485725f23' },
 			-- Buffer completions
-			'hrsh7th/cmp-buffer',
+			{ 'hrsh7th/cmp-buffer', commit = '3022dbc9166796b644a841a02de8dd1cc1d311fa' },
 			-- LSP completions
-			'hrsh7th/cmp-nvim-lsp',
-			'onsails/lspkind-nvim',
+			{ 'hrsh7th/cmp-nvim-lsp', commit = '78924d1d677b29b3d1fe429864185341724ee5a2' },
+			{ 'onsails/lspkind-nvim', commit = 'c68b3a003483cf382428a43035079f78474cd11e' },
 			-- vnsip completions
-			'hrsh7th/cmp-vsnip',
-			'hrsh7th/vim-vsnip',
-			'rafamadriz/friendly-snippets',
+			{ 'hrsh7th/cmp-vsnip', commit = '1ae05c6c867d9ad44bce811056e861e0d5c531cb' },
+			{ 'hrsh7th/vim-vsnip', commit = 'ceeee48145d27f0b3986ab6f75f52a2449974603' },
+			{ 'rafamadriz/friendly-snippets', commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' },
 		},
 		config = function()
 			local cmp = require 'cmp'
@@ -631,9 +633,21 @@ packer.startup(function(use)
 	-- Treesitter
 	use {
 		'nvim-treesitter/nvim-treesitter',
+		commit = '2072692aaa4b6da7c354e66c2caf4b0a8f736858',
 		-- We make treesitter extenstions optional so we can ensure it's loaded properly
 		-- before we call treesitter setup in `config` below using packadd
-		requires = { 'nvim-treesitter/nvim-treesitter-textobjects', opt = true },
+		requires = {
+			{
+				'nvim-treesitter/nvim-treesitter-textobjects',
+				commit = '1f1cdc892b9b2f96afb1bddcb49ac1a12b899796',
+				opt = true,
+			},
+			{
+				'nvim-treesitter/nvim-treesitter-context',
+				commit = '0dd5eae6dbf226107da2c2041ffbb695d9e267c1',
+				opt = true,
+			},
+		},
 		run = function()
 			require('nvim-treesitter.install').update { with_sync = true }
 		end,
@@ -684,6 +698,7 @@ packer.startup(function(use)
 
 	use {
 		'lukas-reineke/indent-blankline.nvim',
+		commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6',
 		config = function()
 			vim.g.indent_blankline_show_first_indent_level = false
 		end,
@@ -692,7 +707,7 @@ packer.startup(function(use)
 	use {
 		'folke/todo-comments.nvim',
 		commit = '530eb3a896e9eef270f00f4baafa102361afc93b',
-		requires = 'nvim-lua/plenary.nvim',
+		requires = { 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
 		config = function()
 			require('todo-comments').setup {}
 		end,
