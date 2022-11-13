@@ -1,8 +1,8 @@
-# Single file nvim config
+# Single file nvim configuration
 
 A clean, organized pre-configured neovim configuration in a single `init.lua`.
 
-[For documentation check the `init.lua`.](./init.lua)
+[For documentation check `init.lua`.](./init.lua)
 
 If you want to start from scratch but with some helper functions you can try out [`blank.lua` file](./blank.lua).
 
@@ -38,18 +38,18 @@ This `init.lua` comes with the following plugins pre-configured to work together
 ## Motivation
 
 This is just my take on creating just one single config file to handle all configurations for nvim. Where having
-multiple files brings an overhead of maintanence of logic in different files, I wanted to take a more straight forward
-approach of keeping in all in one file.
+multiple files brings an overhead of maintenance of logic in different files, I wanted to take a more straight forward
+approach of keeping it all in one file.
 
 The aim is to take away the mental model of multiple files and just use one file with a couple simple methods to manage
-your code within a single file.
+and organize your code within a single file in order to have a better nvim experience.
 
-One such method is to navigate through different sections with search tags, which come in the form of words attached
-to different sections in within the comments. Using `/` and searching for the tag will direct you to that section.
+One such method is to navigate through different sections with search tags, that comes in the form of words attached
+to different sections in within comments. Using `/` and searching for the tag will jump you to that section.
 
 For example, if you want to navigate to the packer section to add additional plugins you would then search for `/PLUG`
 and it will take you to that section. The same for when you want to configure some part of your LSP configuration, you
-would search for `/LSP` and you will be directed to the relevate LSP section of the code.
+would search for `/LSP` and you will be directed to the relevant LSP section of the code.
 
 ## Installation
 
@@ -68,7 +68,7 @@ git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
 You can ignore those and restart nvim, the problem is usually the plugin setup being called before the plugin is even
 installed.
 
-### Treesitter higlights don't work on lua files, getting errors on every line
+### Treesitter highlights don't work on lua files, getting errors on every line
 
 Try to run `:TSUpdate` to get the latest parser for lua.
 
