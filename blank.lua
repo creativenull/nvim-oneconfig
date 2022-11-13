@@ -15,11 +15,18 @@ if vim.fn.has 'nvim-0.8' == 0 then
 end
 
 -- ============================================================================
--- Functions (search: FUNC, FUNCTIONS)
+-- Events (search: EVENTS, AUG, AUGROUP, AUTOCMD, AUTO)
 --
--- These are utility functions that is used for convenience, do not remove but
--- you are welcome to add your own functions that can be used anywhere in this
--- file.
+-- Add your specific events/autocmds in here, but you are free to add then
+-- anywhere you like. Example, show a highlight when yanking text:
+--
+--      vim.api.nvim_create_autocmd('TextYankPost', {
+--      	group = config.autocmd.group,
+--      	callback = function()
+--      		vim.highlight.on_yank { higroup = 'IncSearch', timeout = 300 }
+--      	end,
+--      	desc = 'Show a highlight on yank',
+--      })
 -- ============================================================================
 
 ---Ensure that the undo directory is created before we user it.
@@ -121,20 +128,28 @@ vim.filetype.add {}
 -- ============================================================================
 -- Vim Options (search: OPT, OPTS, OPTIONS)
 --
--- Add your custom vim options here.
+-- Add your custom vim options with `vim.opt`. Example, show number line and
+-- sign column:
+--
+-- vim.opt.number = true
+-- vim.opt.signcolumn = 'yes'
 -- ============================================================================
 
 -- =============================================================================
 -- Keymaps (search: KEYS, KEY, KEYMAPS)
 --
--- Add your custom keymaps here.
+-- Add your custom keymaps with `vim.keymap.set()`. Example, Use jk to go from
+-- insert to normal mode:
+--
+-- vim.keymap.set('i', 'jk', '<Esc>')
 -- =============================================================================
 
 -- =============================================================================
 -- User Commands (search: CMD, CMDS, COMMANDS)
 --
--- You custom user commands, you can set any commands you like or even
--- abbreviations (which gets quite helpful when making mistakes).
+-- You custom user commands with `vim.api.nvim_create_user_command()`, you can
+-- set any commands you like or even abbreviations (which gets quite helpful
+-- when making mistakes).
 -- =============================================================================
 
 -- ============================================================================
@@ -182,6 +197,8 @@ packer.startup(function(use)
 	-- Add your plugins inside this function
 	-- ---
 
+	-- Example:
+	--
 	-- use {
 	-- 	'folke/which-key.nvim',
 	-- 	commit = '61553aeb3d5ca8c11eea8be6eadf478062982ac9',
@@ -210,15 +227,35 @@ end
 --
 -- LSP Server configurations goes here. This is also where you should add any
 -- logic that concerns the builtin LSP client.
+--
 -- For example:
--- + You need LSP servers installed? Add mason config in here
--- + You need to add some UI/change look of your LSP/Statusline/Tabline/Winbar etc? Add them here
+--  + You need LSP servers installed? Add mason config here
+--  + You need to add some UI/change look of your LSP/Statusline/Tabline/Winbar
+--    etc but is tightly integrated with LSP? Add them here
 -- ============================================================================
 
 -- ============================================================================
 -- Theme (search: THEME, COLOR, COLORSCHEME)
 --
--- Colorscheme always goes last.
+-- Colorscheme and their configuration comes last.
+--
+-- If you want to change some highlights that is separate to the ones provided
+-- by another colorscheme, then you will have to add these changes within the
+-- ColorScheme autocmd.
+--
+-- Example, to change WinSeparator highlight:
+--
+--      vim.api.nvim_create_autocmd('ColorScheme', {
+--      	group = config.autocmd.group,
+--      	callback = function()
+--      		vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = '#eeeeee' })
+--      	end,
+--      })
+--
+--
+-- NOTE: if a colorscheme already has a lua setup() that helps you change
+-- highlights to your desired colors then use that instead of creating a
+-- ColorScheme autocmd. Only use the autocmd route when it's not supported.
 -- ============================================================================
 
 -- pcall(vim.cmd, 'colorscheme catppuccin')
