@@ -1,38 +1,61 @@
 # Single file nvim config
 
-A clean, organized neovim config written only on one file.
+A clean, organized pre-configured neovim configuration in a single `init.lua`.
+
+[For documentation check the `init.lua`.](./init.lua)
+
+If you want to start from scratch but with some helper functions you can try out [`blank.lua` file](./blank.lua).
+
+This `init.lua` comes with the following plugins pre-configured to work together with each other:
+
+- [which-key.nvim](https://github.com/folke/which-key.nvim)
+- [nvim-surround](https://github.com/kylechui/nvim-surround)
+- [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+- [Comment.nvim](https://github.com/numToStr/Comment.nvim)
+- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+    - [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
+- [mason.nvim](https://github.com/williamboman/mason.nvim)
+    - [mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)
+    - [mason-tool-installer.nvim](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim)
+- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+    - [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
+    - [cmp-path](https://github.com/hrsh7th/cmp-path)
+    - [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
+    - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+    - [lspkind-nvim](https://github.com/onsails/lspkind-nvim)
+    - [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip)
+- [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
+    - [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
+- [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
+- [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim)
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
 
 ## Motivation
 
-This is just my take on creating just one single config file to handle all your configurations for nvim. Where having
-multiple files mean that you now have to maintain your logic in different files, I want to take the approach on keeping
-it all in one file, since a nvim config shouldn't be a chore or a project that you want to keep up-to-date every hour.
+This is just my take on creating just one single config file to handle all configurations for nvim. Where having
+multiple files brings an overhead of maintanence of logic in different files, I wanted to take a more straight forward
+approach of keeping in all in one file.
 
-The aim is to take away the mental model of multiple files and use one file with couple simple techniques to manage your
-user and plugin configs.
+The aim is to take away the mental model of multiple files and just use one file with a couple simple methods to manage
+your code within a single file.
 
-One technique that is in this init file is having tags that you can search through different sections. This was inspired
-from my own config where I section off particular logic and be able to search them with `/` in nvim.
+One such method is to navigate through different sections with search tags, which come in the form of words attached
+to different sections in within the comments. Using `/` and searching for the tag will direct you to that section.
 
-Each section is documented to describe what goes in there, check the [init.lua](./init.lua) file to go through them,
-but the shorter explanation is below:
-
-- `USER` or `CONFIG` - Navigate to your custom variables that will be used within your init file
-- `FUNC` or `FUNCTIONS` - Navigate to your custom functions that will be used within your init file
-- `EVENTS`, `AUG`, `AUGROUP`, `AUTOCMD` or `AUTO` - Navigate to your custom autocmds for your config or plugins
-- `FT` or `FILETYPE` - Navigate to your custom filetype configurations
-- `OPT`, `OPTS` or `OPTIONS` - Navigate to your custom vim options that are set with `vim.opt`
-- `KEYS`, `KEY` or `KEYMAPS` - Navigate to your custom keybind/keymap that are set with `vim.keymap.set`
-- `CMD`, `CMDS` or `COMMANDS` - Navigate to your custom user commands that are set with `vim.api.nvim_create_user_command`
-- `PLUG`, `PLUGS` or `PLUGINS` - Navigate to your plugin manager list set with packer.nvim
-- `LSP` or `LSPCONFIG` - Navigate to your custom builtin nvim-lsp config, this is separate because
-- `THEME`, `COLOR` or `COLORSCHEME` - Navigate to your custom theme configuration
+For example, if you want to navigate to the packer section to add additional plugins you would then search for `/PLUG`
+and it will take you to that section. The same for when you want to configure some part of your LSP configuration, you
+would search for `/LSP` and you will be directed to the relevate LSP section of the code.
 
 ## Installation
 
 ### Linux/MacOS:
 
-> NOTE: If you have an existing config, you should make a backup of it with: `mv ~/.config/nvim ~/.config/nvim_bk`
+> NOTE: If you have an existing config, you should make a backup of it.
 
 ```sh
 git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
