@@ -1,9 +1,11 @@
 -- ============================================================================
--- Your custom user config variables (search: USER, CONFIG)
+-- Your custom user config variables
 --
 -- This is your custom user config, use this to add variables that you might
 -- use in different plugins. Note, this is just an example on how I would
 -- structure it, it's up to you to adjust it to your liking.
+--
+-- Tags: USER, CONFIG
 -- ============================================================================
 
 local config = {
@@ -52,11 +54,13 @@ if vim.fn.has 'nvim-0.8' == 0 then
 end
 
 -- ============================================================================
--- Functions (search: FUNC, FUNCTIONS)
+-- Functions
 --
 -- These are utility functions that is used for convenience, do not remove but
 -- you are welcome to add your own functions that can be used anywhere in this
 -- file.
+--
+-- Tags: FUNC, FUNCTIONS
 -- ============================================================================
 
 ---Ensure that the undo directory is created before we user it.
@@ -135,7 +139,7 @@ local function register_lsp_fmt_autosave(name, bufnr)
 end
 
 -- ============================================================================
--- Events (search: EVENTS, AUG, AUGROUP, AUTOCMD, AUTO)
+-- Events
 --
 -- Add your specific events/autocmds in here, but you are free to add then
 -- anywhere you like. Example, show a highlight when yanking text:
@@ -147,6 +151,8 @@ end
 --      	end,
 --      	desc = 'Show a highlight on yank',
 --      })
+--
+-- Tags: AU, AUG, AUGROUP, AUTOCMD, EVENTS
 -- ============================================================================
 
 -- From vim defaults.vim
@@ -186,7 +192,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 })
 
 -- ============================================================================
--- File Type Configurations (search: FT, FILETYPE)
+-- File Type Configurations
 --
 -- Add any file type changes you want to do. This works in the same way you
 -- would add your configurations in a ftdetect/<filetype>.lua or in
@@ -195,6 +201,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- For most cases, you will use vim.filetype.add() to make your adjustments.
 -- Check `:help vim.filetype.add` for more documentation and
 -- `:edit $VIMRUNTIME/lua/vim/filetype.lua` for examples.
+--
+-- Tags: FT, FILETYPE
 -- ============================================================================
 
 vim.filetype.add {
@@ -209,13 +217,15 @@ vim.filetype.add {
 }
 
 -- ============================================================================
--- Vim Options (search: OPT, OPTS, OPTIONS)
+-- Vim Options
 --
 -- Add your custom vim options with `vim.opt`. Example, show number line and
 -- sign column:
 --
 -- vim.opt.number = true
 -- vim.opt.signcolumn = 'yes'
+--
+-- Tags: OPT, OPTS, OPTIONS
 -- ============================================================================
 
 ensure_undo_dir(config.undo_dir)
@@ -264,12 +274,14 @@ vim.opt.laststatus = 3
 vim.opt.fillchars:append { eob = ' ' }
 
 -- =============================================================================
--- Keymaps (search: KEYS, KEY, KEYMAPS)
+-- Keymaps
 --
 -- Add your custom keymaps with `vim.keymap.set()`. Example, Use jk to go from
 -- insert to normal mode:
 --
 -- vim.keymap.set('i', 'jk', '<Esc>')
+--
+-- Tags: KEY, KEYS, KEYMAPS
 -- =============================================================================
 
 vim.g.mapleader = config.keymap.leader
@@ -334,11 +346,13 @@ vim.keymap.set('n', '<Leader>y', [["+y]], { desc = 'Yank from system clipboard' 
 vim.keymap.set('n', '<Leader>p', [["+p]], { desc = 'Paste from system clipboard' })
 
 -- =============================================================================
--- User Commands (search: CMD, CMDS, COMMANDS)
+-- User Commands
 --
 -- You custom user commands with `vim.api.nvim_create_user_command()`, you can
 -- set any commands you like or even abbreviations (which gets quite helpful
 -- when making mistakes).
+--
+-- Tags: CMD, CMDS, COMMANDS
 -- =============================================================================
 
 vim.api.nvim_create_user_command('Config', 'edit $MYVIMRC', { desc = 'Open config' })
@@ -351,7 +365,7 @@ vim.cmd 'cnoreabbrev W  w'
 vim.cmd 'cnoreabbrev Wq wq'
 
 -- ============================================================================
--- Plugins (search: PLUG, PLUGS, PLUGINS)
+-- Plugins
 --
 -- Add your plugins in here along with their configurations. However, the
 -- exception is for LSP configurations which is done separately further below.
@@ -380,6 +394,8 @@ vim.cmd 'cnoreabbrev Wq wq'
 --                     require("nvim-autopairs").setup({})
 --             	   end,
 --             })
+--
+-- Tags: PLUG, PLUGS, PLUGINS
 -- ============================================================================
 
 local packer_bootstrap = ensure_packer()
@@ -743,7 +759,7 @@ if packer_bootstrap then
 end
 
 -- ============================================================================
--- LSP Configuration (search: LSP, LSPCONFIG)
+-- LSP Configuration
 --
 -- LSP Server configurations goes here. This is also where you should add any
 -- logic that concerns the builtin LSP client.
@@ -752,6 +768,8 @@ end
 --  + You need LSP servers installed? Add mason config here
 --  + You need to add some UI/change look of your LSP/Statusline/Tabline/Winbar
 --    etc but is tightly integrated with LSP? Add them here
+--
+-- Tags: LSP, LSPCONFIG
 -- ============================================================================
 
 -- LSP Saga Config
@@ -911,7 +929,7 @@ nls.setup {
 }
 
 -- ============================================================================
--- Theme (search: THEME, COLOR, COLORSCHEME)
+-- Theme
 --
 -- Colorscheme and their configuration comes last.
 --
@@ -932,6 +950,8 @@ nls.setup {
 -- NOTE: if a colorscheme already has a lua setup() that helps you change
 -- highlights to your desired colors then use that instead of creating a
 -- ColorScheme autocmd. Only use the autocmd route when it's not supported.
+--
+-- Tags: THEME, COLOR, COLORSCHEME
 -- ============================================================================
 
 pcall(function()
