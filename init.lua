@@ -425,6 +425,19 @@ packer.startup(function(use)
 	}
 
 	use {
+		'editorconfig/editorconfig-vim',
+		commit = '30ddc057f71287c3ac2beca876e7ae6d5abe26a0',
+	}
+
+	use {
+		'mattn/emmet-vim',
+		commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d',
+		config = function()
+			vim.g.user_emmet_leader_key = '<C-q>'
+		end,
+	}
+
+	use {
 		'kylechui/nvim-surround',
 		tag = 'v1.0.0',
 		config = function()
