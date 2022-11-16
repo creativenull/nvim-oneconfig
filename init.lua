@@ -30,7 +30,7 @@ local config = {
 		-- I use this to conditionally set a keybind for formatting my
 		-- code from an LSP server or not. Because some servers do not
 		-- have that capability or you would rather use null-ls.
-		fmt_allowed_servers = {},
+		fmt_allowed_servers = { 'denols' },
 
 		-- For mason.nvim
 		servers = {
@@ -899,10 +899,20 @@ lspconfig.sumneko_lua.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 }))
 
 -- Web Development
-lspconfig.tsserver.setup(lspconfig_setup_defaults)
-lspconfig.graphql.setup(lspconfig_setup_defaults)
-lspconfig.prismals.setup(lspconfig_setup_defaults)
+lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	root_dir = require('lspconfig.util').root_pattern { 'deno.json' },
+}))
+lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
+}))
+lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
+}))
+lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
+}))
 lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
 	init_options = {
 		typescript = {
 			tsdk = string.format('%s/node_modules/typescript/lib', vim.fn.getcwd()),
@@ -912,11 +922,17 @@ lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 
 -- Null-ls Config
 -- ---
+local node_tools_config = {
+	condition = function(utils)
+		return utils.root_has_file { 'package.json', 'tsconfig.json', 'jsconfig.json' }
+	end,
+}
+
 local nls = require 'null-ls'
 nls.setup {
 	sources = {
-		nls.builtins.diagnostics.eslint_d,
-		nls.builtins.formatting.prettier,
+		nls.builtins.diagnostics.eslint_d.with(node_tools_config),
+		nls.builtins.formatting.prettier.with(node_tools_config),
 		nls.builtins.formatting.stylua.with {
 			extra_args = {
 				'--column-width',
