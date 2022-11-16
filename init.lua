@@ -989,12 +989,12 @@ pcall(function()
 
 	-- Example:
 	--
-	--  require('catppuccin').setup {
-	--      flavour = 'mocha',
-	--      custom_highlights = {
-	--          WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
-	--      },
-	--  }
+	require('catppuccin').setup {
+		flavour = 'mocha',
+		custom_highlights = {
+			WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
+		},
+	}
 
-	vim.cmd 'colorscheme barstrata'
+	vim.cmd 'colorscheme catppuccin'
 end)
