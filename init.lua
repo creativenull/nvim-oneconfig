@@ -782,7 +782,7 @@ end
 --  + You need to add some UI/change look of your LSP/Statusline/Tabline/Winbar
 --    etc but is tightly integrated with LSP? Add them here
 --
--- Tags: LSP, LSPCONFIG
+-- Tags: LSPCONFIG
 -- ============================================================================
 
 -- LSP Saga Config
