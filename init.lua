@@ -946,20 +946,14 @@ lspconfig.sumneko_lua.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 }))
 
 -- Web Development
-lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
-	root_dir = require('lspconfig.util').root_pattern { 'deno.json' },
-}))
-lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
-	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
-}))
-lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
-	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
-}))
-lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
-	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
-}))
-lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
-	root_dir = require('lspconfig.util').root_pattern { 'package.json' },
+-- ---
+-- We only want to attach to a node/frontend project with it matches
+-- package.json, jsconfig.json or tsconfig.json file
+local lspconfig_node_options = { root_dir = require('lspconfig.util').root_pattern { 'package.json' } }
+lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options, {
 	init_options = {
 		typescript = {
 			tsdk = string.format('%s/node_modules/typescript/lib', vim.fn.getcwd()),
@@ -967,9 +961,14 @@ lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 	},
 }))
 
+-- We want to only attach to a deno project when it matches only
+-- deno.json or deno.jsonc file
+local lspconfig_deno_options = { root_dir = require('lspconfig.util').root_pattern { 'deno.json', 'deno.jsonc' } }
+lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_deno_options))
+
 -- Null-ls Config
 -- ---
-local node_tools_config = {
+local nls_node_options = {
 	condition = function(utils)
 		return utils.root_has_file { 'package.json', 'tsconfig.json', 'jsconfig.json' }
 	end,
@@ -978,8 +977,12 @@ local node_tools_config = {
 local nls = require 'null-ls'
 nls.setup {
 	sources = {
-		nls.builtins.diagnostics.eslint_d.with(node_tools_config),
-		nls.builtins.formatting.prettier.with(node_tools_config),
+		-- We only want to have eslint and prettier to run when it matches_error
+		-- a root file
+		nls.builtins.diagnostics.eslint_d.with(nls_node_options),
+		nls.builtins.formatting.prettier.with(nls_node_options),
+
+		-- Custom stylua just for this init.lua file
 		nls.builtins.formatting.stylua.with {
 			extra_args = {
 				'--column-width',
