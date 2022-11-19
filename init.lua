@@ -710,7 +710,57 @@ packer.startup(function(use)
 			{ 'nvim-tree/nvim-web-devicons', commit = '9061e2d355ecaa2b588b71a35e7a11358a7e51e1' },
 		},
 		config = function()
-			require('lualine').setup {}
+			local function attached_lsp_clients()
+				local clients = vim.lsp.get_active_clients()
+
+				if vim.tbl_isempty(clients) then
+					return ''
+				end
+
+				local client_names = vim.tbl_map(function(client)
+					if client.name == 'null-ls' then
+						return ' ' .. client.name
+					else
+						return ' ' .. client.name
+					end
+				end, clients)
+
+				return table.concat(client_names, ', ')
+			end
+
+			require('lualine').setup {
+				options = {
+					component_separators = { left = '', right = '' },
+					section_separators = { left = '', right = '' },
+				},
+				sections = {
+					lualine_a = {
+						{ 'mode', separator = { left = '' }, right_padding = 2 },
+					},
+					lualine_b = { 'filename', { 'branch', icon = '' } },
+					lualine_c = { 'diff' },
+					lualine_x = {},
+					lualine_y = {
+						'filetype',
+						{
+							'diagnostics',
+							sources = { 'nvim_diagnostic' },
+							sections = { 'error', 'warn' },
+						},
+					},
+					lualine_z = { { attached_lsp_clients, separator = { right = '' }, left_padding = 2 } },
+				},
+				inactive_sections = {
+					lualine_a = { 'filename' },
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = { 'location' },
+				},
+				tabline = {},
+				extensions = {},
+			}
 		end,
 	}
 
