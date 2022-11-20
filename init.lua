@@ -27,9 +27,13 @@ local config = {
 		fmt_on_save = true,
 		fmt_opts = { async = false, timeout = 2500 },
 
-		-- I use this to conditionally set a keybind for formatting my
-		-- code from an LSP server or not. Because some servers do not
-		-- have that capability or you would rather use null-ls.
+		-- Use this to conditionally set a keybind for formatting
+		-- code a lsp server defined here. Because some servers do
+		-- not have that capability or you would rather exclusively
+		-- use null-ls.
+		--
+		-- NOTE: Null-ls is enabled by default for formatting, so you
+		-- don't need to add null-ls here.
 		fmt_allowed_servers = {
 			'denols',
 			'pylsp',
@@ -37,16 +41,16 @@ local config = {
 
 		-- For mason.nvim
 		servers = {
-			'tsserver',
-			'sumneko_lua',
-			'prismals',
 			'graphql',
-			'volar',
+			'prismals',
 			'pylsp',
+			'sumneko_lua',
+			'tsserver',
+			'volar',
 		},
 		tools = {
-			'stylua',
 			'eslint_d',
+			'stylua',
 		},
 	},
 }
