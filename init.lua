@@ -523,6 +523,7 @@ packer.startup(function(use)
 			{ 'WhoIsSethDaniel/mason-tool-installer.nvim', commit = '27f61f75a71bb3c2504a17e02b571f79cae43676' },
 			-- UI/Aesthetics
 			{ 'glepnir/lspsaga.nvim', commit = '201dbbd13d6bafe1144475bbcae9efde224e07ec' },
+			{ 'j-hui/fidget.nvim', commit = '2cf9997d3bde2323a1a0934826ec553423005a26' },
 		},
 	}
 
@@ -834,6 +835,10 @@ end
 --
 -- Tags: LSPCONFIG
 -- ============================================================================
+
+-- fidget.nvim Config
+-- ---
+require('fidget').setup {}
 
 -- LSP Saga Config
 -- ---
