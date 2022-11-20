@@ -718,15 +718,18 @@ packer.startup(function(use)
 					return ''
 				end
 
-				local client_names = vim.tbl_map(function(client)
-					if client.name == 'null-ls' then
-						return ' ' .. client.name
-					else
-						return ' ' .. client.name
+				-- We only want unique names from attached clients
+				local unique_client_names = {}
+				for _, client in pairs(clients) do
+					local name = ' ' .. client.name
+					if name == 'null-ls' then
+						name = ' ' .. client.name
 					end
-				end, clients)
 
-				return table.concat(client_names, ', ')
+					unique_client_names[name] = true
+				end
+
+				return table.concat(vim.tbl_keys(unique_client_names), ', ')
 			end
 
 			require('lualine').setup {
