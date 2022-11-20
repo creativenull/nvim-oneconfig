@@ -41,6 +41,7 @@ local config = {
 
 		-- For mason.nvim
 		servers = {
+			'gopls',
 			'graphql',
 			'prismals',
 			'pylsp',
@@ -985,6 +986,10 @@ lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconf
 -- Python
 -- ---
 lspconfig.pylsp.setup(lspconfig_setup_defaults)
+
+-- Go
+-- ---
+lspconfig.gopls.setup(lspconfig_setup_defaults)
 
 -- Null-ls Config
 -- ---
