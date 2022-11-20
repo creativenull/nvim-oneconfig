@@ -30,7 +30,10 @@ local config = {
 		-- I use this to conditionally set a keybind for formatting my
 		-- code from an LSP server or not. Because some servers do not
 		-- have that capability or you would rather use null-ls.
-		fmt_allowed_servers = { 'denols' },
+		fmt_allowed_servers = {
+			'denols',
+			'pylsp',
+		},
 
 		-- For mason.nvim
 		servers = {
@@ -39,6 +42,7 @@ local config = {
 			'prismals',
 			'graphql',
 			'volar',
+			'pylsp',
 		},
 		tools = {
 			'stylua',
@@ -973,6 +977,10 @@ lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfi
 -- deno.json or deno.jsonc file
 local lspconfig_deno_options = { root_dir = require('lspconfig.util').root_pattern { 'deno.json', 'deno.jsonc' } }
 lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_deno_options))
+
+-- Python
+-- ---
+lspconfig.pylsp.setup(lspconfig_setup_defaults)
 
 -- Null-ls Config
 -- ---
