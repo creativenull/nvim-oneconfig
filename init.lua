@@ -45,6 +45,7 @@ local config = {
 			'graphql',
 			'prismals',
 			'pylsp',
+			'rust_analyzer',
 			'sumneko_lua',
 			'tsserver',
 			'volar',
@@ -990,6 +991,10 @@ lspconfig.pylsp.setup(lspconfig_setup_defaults)
 -- Go
 -- ---
 lspconfig.gopls.setup(lspconfig_setup_defaults)
+
+-- Rust
+-- ---
+lspconfig.rust_analyzer.setup(lspconfig_setup_defaults)
 
 -- Null-ls Config
 -- ---
