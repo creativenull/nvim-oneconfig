@@ -37,8 +37,11 @@ This is just my take on creating just one single config file to handle all confi
 multiple files brings an overhead of maintenance of logic in different files, I wanted to take a more straight forward
 approach of keeping it all in one file.
 
-The aim is to take away the mental model of multiple files and just use one file with a couple simple methods to manage
-and organize your code within a single file in order to have a better nvim experience.
+The aim is to take away the mental model of multiple files and trying to avoid jumping between files to add/update your
+configurations and just use one file with a couple simple methods to manage and organize your code within it in order
+to have a better nvim experience.
+
+### Navigation
 
 One such method is to navigate through different sections with search tags, that comes in the form of words attached
 to different sections in within comments. Using `/` and searching for the tag will jump you to that section.
@@ -46,6 +49,23 @@ to different sections in within comments. Using `/` and searching for the tag wi
 For example, if you want to navigate to the packer section to add additional plugins you would then search for `/PLUG`
 and it will take you to that section. The same for when you want to configure some part of your LSP configuration, you
 would search for `/LSP` and you will be directed to the relevant LSP section of the code.
+
+### Out-of-box LSP configurations + autocompletion and its plugins
+
+LSP configuration comes out-of-box and not tightly bound with packer.nvim, since packer compiles plugins to make them
+faster to load, this does not work well with LSP and its configuration.
+
+So LSP configurations are setup outside of packer and loaded by default. The advantage to this is that LSP is loaded
+and ready to work and not just lazy-loaded in order to save time.
+
+### Not built for speed but for efficiency
+
+Which brings me to another point, at the end of the day this single configuration file is created for your guidance on
+writing your own configuration without much of a hassle, it's by no means a way to write the most optimized nvim
+configuration possible (although it loads quite fast within ~200ms on my machine 😅).
+
+However, you are free to take this and optimize it any way you would like, in fact, I would highly encourage you do so
+because in the end this is just a guide for your convenience!
 
 ## Installation
 
