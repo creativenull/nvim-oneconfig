@@ -1058,7 +1058,7 @@ nls.setup {
 --
 -- NOTE: if a colorscheme already has a lua setup() that helps you change
 -- highlights to your desired colors then use that instead of creating a
--- ColorScheme autocmd. Only use the autocmd route when it's not supported.
+-- ColorScheme autocmd. Only use autocmd when it's not supported.
 --
 -- Tags: THEME, COLOR, COLORSCHEME
 -- ============================================================================
