@@ -965,9 +965,12 @@ lspconfig.sumneko_lua.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 
 -- Web Development
 -- ---
--- We only want to attach to a node/frontend project with it matches
+-- We only want to attach to a node/frontend project if it matches
 -- package.json, jsconfig.json or tsconfig.json file
-local lspconfig_node_options = { root_dir = require('lspconfig.util').root_pattern { 'package.json' } }
+local lspconfig_node_options = {
+	root_dir = require('lspconfig.util').root_pattern { 'package.json', 'jsconfig.json', 'tsconfig.json' },
+}
+
 lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
