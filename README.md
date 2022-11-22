@@ -81,7 +81,7 @@ git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
 
 In a powershell terminal:
 
-```powershell
+```sh
 git clone https://github.com/creativenull/nvim-one.git ~\AppData\Local\nvim
 ```
 
