@@ -1,39 +1,35 @@
-# Single file nvim configuration
+# Neovim configuration guide
 
-A clean, organized pre-configured neovim configuration in a single `init.lua`.
+A clean, organized pre-configured neovim configuration guide in a single `init.lua`.
 
 [For documentation check `init.lua`.](./init.lua)
 
 If you want to start from scratch but with some helper functions you can try out [`blank.lua` file](./blank.lua).
 
-This `init.lua` comes with the following plugins pre-configured to work together with each other:
+This `init.lua` comes with the following plugins pre-configured to work, for a more detailed list check the `init.lua`
+and search for `/PLUG`:
 
-- [which-key.nvim](https://github.com/folke/which-key.nvim)
-- [nvim-surround](https://github.com/kylechui/nvim-surround)
-- [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
-- [Comment.nvim](https://github.com/numToStr/Comment.nvim)
-- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-    - [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
-- [mason.nvim](https://github.com/williamboman/mason.nvim)
-    - [mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)
-    - [mason-tool-installer.nvim](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim)
-- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-    - [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
-    - [cmp-path](https://github.com/hrsh7th/cmp-path)
-    - [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
-    - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
-    - [lspkind-nvim](https://github.com/onsails/lspkind-nvim)
-    - [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip)
-- [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
-    - [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
-- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
-- [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
-- [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
-- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim)
-- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - configure LSP servers to run on your files/projects.
+- [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) - provides an LSP protocol to run your tools such as
+  eslint, prettier, stylua, etc.
+- [mason.nvim](https://github.com/williamboman/mason.nvim) - automatically install LSP servers and tools (like eslint,
+  prettier, etc) for `lspconfig` and `null-ls` to use.
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) - fuzzy find things like files, grep code,
+  buffers, etc.
+- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) - a simple file explorer.
+- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - autocompletion framework to provide suggestion within buffers,
+  code, attached LSP servers, etc.
+- [vim-vsnip](https://github.com/hrsh7th/vim-vsnip) - snippets engine plugin and provider via
+  [friendly-snippets](https://github.com/rafamadriz/friendly-snippets).
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - mainly used to highlight code using the
+  treesitter parser, a must have for cleaner looking syntax highlighting and many more features like code folding,
+  smart indenting, etc.
+- [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) - a better looking statusline.
+- [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) - a better looking tabline for buffers.
+- [which-key.nvim](https://github.com/folke/which-key.nvim) - show a tooltip to display keybinds when pressing those
+  keybinds
+- [Comment.nvim](https://github.com/numToStr/Comment.nvim) - add comments based on file type.
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) - provide git changes on the buffer.
 
 ## Motivation
 
