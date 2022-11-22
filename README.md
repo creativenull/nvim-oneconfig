@@ -77,6 +77,14 @@ because in the end this is just a guide for your convenience!
 git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
 ```
 
+### Windows
+
+In a powershell terminal:
+
+```pwsh
+git clone https://github.com/creativenull/nvim-one.git ~\AppData\Local\nvim
+```
+
 ## Troubleshooting
 
 ### Errors installing on first time
