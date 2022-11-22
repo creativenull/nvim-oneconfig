@@ -69,9 +69,9 @@ because in the end this is just a guide for your convenience!
 
 ## Installation
 
-### Linux/MacOS:
+NOTE: If you have an existing config, you should make a backup of it.
 
-> NOTE: If you have an existing config, you should make a backup of it.
+### Linux/MacOS:
 
 ```sh
 git clone https://github.com/creativenull/nvim-one.git ~/.config/nvim
