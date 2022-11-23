@@ -41,12 +41,16 @@ local config = {
 
 		-- For mason.nvim
 		servers = {
+			'cssls',
 			'gopls',
 			'graphql',
+			'html',
+			'jsonls',
 			'prismals',
 			'pylsp',
 			'rust_analyzer',
 			'sumneko_lua',
+			'svelte',
 			'tsserver',
 			'volar',
 		},
@@ -971,9 +975,13 @@ local lspconfig_node_options = {
 	root_dir = require('lspconfig.util').root_pattern { 'package.json', 'jsconfig.json', 'tsconfig.json' },
 }
 
-lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.cssls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.html.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.jsonls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.svelte.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options, {
 	init_options = {
 		typescript = {
