@@ -142,7 +142,7 @@ end
 ---@param bufnr number The buffer handle of LSP client
 ---@return nil
 local function register_lsp_fmt_autosave(name, bufnr)
-	vim.api.nvim_create_autocmd('BufWritePre', {
+	vim.api.nvim_create_autocmd('BufWritePost', {
 		group = config.autocmd.group,
 		buffer = bufnr,
 		callback = function()
