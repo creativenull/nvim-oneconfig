@@ -577,6 +577,10 @@ packer.startup(function(use)
 			end
 
 			cmp.setup {
+				completion = {
+					keyword_length = 2,
+				},
+
 				snippet = {
 					expand = function(args)
 						vim.fn['vsnip#anonymous'](args.body)
@@ -629,11 +633,11 @@ packer.startup(function(use)
 				},
 
 				sources = cmp.config.sources({
-					{ name = 'nvim_lsp' },
-					{ name = 'vsnip' }, -- For vsnip users.
+					{ name = 'nvim_lsp', max_item_count = 10 },
+					{ name = 'vsnip', max_item_count = 5 }, -- For vsnip users.
 				}, {
-					{ name = 'buffer' },
-					{ name = 'path' },
+					{ name = 'buffer', max_item_count = 5 },
+					{ name = 'path', max_item_count = 5 },
 				}),
 
 				window = {
