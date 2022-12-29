@@ -107,9 +107,8 @@ local function reload_config()
 
 	vim.api.nvim_command 'source $MYVIMRC'
 
-	-- Install any plugins needed to be installed
-	-- and compile to faster boot up
-	require('lazy').sync()
+	-- Install missing plugins
+	require('lazy').install()
 end
 
 ---Register a keymap to format code via LSP
