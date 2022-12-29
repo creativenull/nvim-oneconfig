@@ -536,7 +536,7 @@ require('lazy').setup {
 			'L3MON4D3/LuaSnip',
 			'rafamadriz/friendly-snippets',
 		},
-		event = 'InsertEnter',
+		event = { 'InsertEnter', 'CmdlineEnter' },
 		config = function()
 			-- Luasnip
 			require('luasnip.loaders.from_vscode').lazy_load()
