@@ -53,7 +53,7 @@ would search for `/LSP` and you will be directed to the relevant LSP section of 
 ### Out-of-box LSP configurations + autocompletion and its plugins
 
 LSP configurations are setup outside of lazy.nvim and loaded by default. The advantage to this is that LSP is loaded
-and ready to work and not just lazy-loaded or whatever strategy a plugin manager in order to save time.
+and ready to work and not just lazy-loaded or whatever strategy a plugin manager uses in order to save time.
 
 ### Not built for speed but for efficiency
 
