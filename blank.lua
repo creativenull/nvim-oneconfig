@@ -8,7 +8,12 @@
 -- Tags: USER, CONFIG
 -- ============================================================================
 
-local config = {}
+local config = {
+	plugin = {
+		url = 'https://github.com/folke/lazy.nvim',
+		filepath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim',
+	},
+}
 
 -- Requirement check
 if vim.fn.has 'nvim-0.8' == 0 then
@@ -39,19 +44,6 @@ local function ensure_undo_dir(dir)
 	end
 end
 
----Ensure packer is installed, and return if successful or not
----@return boolean
-local function ensure_packer()
-	if vim.fn.empty(vim.fn.glob(config.plugin.filepath)) > 0 then
-		vim.fn.system { 'git', 'clone', '--depth', '1', config.plugin.url, config.plugin.filepath }
-		vim.cmd 'packadd packer.nvim'
-
-		return true
-	end
-
-	return false
-end
-
 ---Reload the config file, this is tightly interoped with packer.nvim
 ---@return nil
 local function reload_config()
@@ -71,8 +63,7 @@ local function reload_config()
 
 	-- Install any plugins needed to be installed
 	-- and compile to faster boot up
-	require('packer').install()
-	require('packer').compile()
+	require('lazy').sync()
 end
 
 ---Register a keymap to format code via LSP
@@ -199,35 +190,37 @@ vim.filetype.add {}
 --     + If you have to pass options to the plug, then use a table instead
 --         Example, for `windwp/nvim-autopairs` you need to run the installer
 --         so call with:
---             use({
+--             {
 --                 "windwp/nvim-autopairs",
---             	   commit = "6b6e35fc9aca1030a74cc022220bc22ea6c5daf4",
 --             	   config = function()
 --                     require("nvim-autopairs").setup({})
 --             	   end,
---             })
+--             }
 --
 -- Tags: PLUG, PLUGS, PLUGINS
 -- ============================================================================
 
-local packer_bootstrap = ensure_packer()
-local packer = require 'packer'
+local lazypath = config.plugin.filepath
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system {
+		'git',
+		'clone',
+		'--filter=blob:none',
+		'--single-branch',
+		config.plugin.url,
+		lazypath,
+	}
+end
+vim.opt.runtimepath:prepend(lazypath)
 
-packer.init {
-	compile_path = string.format('%s/site/plugin/packer_compiled.lua', vim.fn.stdpath 'data'),
-}
-
-packer.startup(function(use)
-	use 'wbthomason/packer.nvim'
-
+require('lazy').setup {
 	-- Add your plugins inside this function
 	-- ---
 
 	-- Example:
 	--
-	-- use {
+	-- {
 	-- 	'folke/which-key.nvim',
-	-- 	commit = '61553aeb3d5ca8c11eea8be6eadf478062982ac9',
 	-- 	config = function()
 	-- 		require('which-key').setup {
 	-- 			triggers = { '<Leader>' },
@@ -236,17 +229,7 @@ packer.startup(function(use)
 	-- 			},
 	-- 		}
 	-- 	end,
-
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if packer_bootstrap then
-		packer.sync()
-	end
-end)
-
-if packer_bootstrap then
-	return
-end
+}
 
 -- ============================================================================
 -- LSP Configuration

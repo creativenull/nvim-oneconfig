@@ -10,8 +10,8 @@
 
 local config = {
 	plugin = {
-		url = 'https://github.com/wbthomason/packer.nvim',
-		filepath = string.format('%s/site/pack/packer/start/packer.nvim', vim.fn.stdpath 'data'),
+		url = 'https://github.com/folke/lazy.nvim',
+		filepath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim',
 	},
 	undo_dir = string.format('%s/undo', vim.fn.stdpath 'cache'),
 	options = {
@@ -41,21 +41,21 @@ local config = {
 
 		-- For mason.nvim
 		servers = {
-			'cssls',
-			'gopls',
-			'graphql',
-			'html',
-			'jsonls',
-			'prismals',
-			'pylsp',
-			'rust_analyzer',
+			-- 'cssls',
+			-- 'gopls',
+			-- 'graphql',
+			-- 'html',
+			-- 'jsonls',
+			-- 'prismals',
+			-- 'pylsp',
+			-- 'rust_analyzer',
 			'sumneko_lua',
-			'svelte',
+			-- 'svelte',
 			'tsserver',
-			'volar',
+			-- 'volar',
 		},
 		tools = {
-			'eslint_d',
+			-- 'eslint_d',
 			'stylua',
 		},
 	},
@@ -90,20 +90,7 @@ local function ensure_undo_dir(dir)
 	end
 end
 
----Ensure packer is installed, and return if successful or not
----@return boolean
-local function ensure_packer()
-	if vim.fn.empty(vim.fn.glob(config.plugin.filepath)) > 0 then
-		vim.fn.system { 'git', 'clone', '--depth', '1', config.plugin.url, config.plugin.filepath }
-		vim.cmd 'packadd packer.nvim'
-
-		return true
-	end
-
-	return false
-end
-
----Reload the config file, this is tightly interoped with packer.nvim
+---Reload the config file, this is tightly interoped with lazy.nvim
 ---@return nil
 local function reload_config()
 	-- Check if LSP servers are running and terminate, if running
@@ -122,8 +109,7 @@ local function reload_config()
 
 	-- Install any plugins needed to be installed
 	-- and compile to faster boot up
-	require('packer').install()
-	require('packer').compile()
+	require('lazy').sync()
 end
 
 ---Register a keymap to format code via LSP
@@ -197,12 +183,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	desc = 'Show a highlight on yank',
 })
 
--- Reload config and packer compile on saving the init.lua file
+-- Reload config and lazy.nvim sync on saving the init.lua file
 vim.api.nvim_create_autocmd('BufWritePost', {
 	group = config.autocmd.group,
 	pattern = string.format('%s/init.lua', vim.fn.stdpath 'config'),
 	callback = reload_config,
-	desc = 'Reload config file and packer compile',
+	desc = 'Reload config file and lazy.nvim sync',
 })
 
 -- ============================================================================
@@ -384,7 +370,7 @@ vim.cmd 'cnoreabbrev Wq wq'
 -- Add your plugins in here along with their configurations. However, the
 -- exception is for LSP configurations which is done separately further below.
 --
--- A quick guide on how to install plugins with packer.nvim:
+-- A quick guide on how to install plugins with lazy.nvim:
 --
 --     + Visit any vim plugin repository on GitHub (or GitLab, etc)
 --
@@ -396,38 +382,53 @@ vim.cmd 'cnoreabbrev Wq wq'
 --         copy the entire URL and
 --         not just the last two paths of the URL.
 --
---     + Add what you copied into the use() function
+--     + Add what you copied into a table/string
 --
 --     + If you have to pass options to the plug, then use a table instead
 --         Example, for `windwp/nvim-autopairs` you need to run the installer
 --         so call with:
---             use({
+--             {
 --                 "windwp/nvim-autopairs",
---             	   commit = "6b6e35fc9aca1030a74cc022220bc22ea6c5daf4",
 --             	   config = function()
 --                     require("nvim-autopairs").setup({})
 --             	   end,
---             })
+--             }
 --
 -- Tags: PLUG, PLUGS, PLUGINS
 -- ============================================================================
 
-local packer_bootstrap = ensure_packer()
-local packer = require 'packer'
+local lazypath = config.plugin.filepath
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system {
+		'git',
+		'clone',
+		'--filter=blob:none',
+		'--single-branch',
+		config.plugin.url,
+		lazypath,
+	}
+end
+vim.opt.runtimepath:prepend(lazypath)
 
-packer.init {
-	compile_path = string.format('%s/site/plugin/packer_compiled.lua', vim.fn.stdpath 'data'),
-}
-
-packer.startup(function(use)
-	use { 'wbthomason/packer.nvim', commit = '6afb67460283f0e990d35d229fd38fdc04063e0a' }
-
-	-- Add your list of plugins below
+require('lazy').setup {
+	-- Add your plugins inside this function
 	-- ---
 
-	use {
+	-- Example:
+	--
+	-- {
+	-- 	'folke/which-key.nvim',
+	-- 	config = function()
+	-- 		require('which-key').setup {
+	-- 			triggers = { '<Leader>' },
+	-- 			window = {
+	-- 				border = 'rounded',
+	-- 			},
+	-- 		}
+	-- 	end,
+
+	{
 		'folke/which-key.nvim',
-		commit = '61553aeb3d5ca8c11eea8be6eadf478062982ac9',
 		config = function()
 			require('which-key').setup {
 				triggers = { '<Leader>' },
@@ -436,53 +437,47 @@ packer.startup(function(use)
 				},
 			}
 		end,
-	}
+	},
 
-	use {
-		'editorconfig/editorconfig-vim',
-		commit = '30ddc057f71287c3ac2beca876e7ae6d5abe26a0',
-	}
+	'editorconfig/editorconfig-vim',
 
-	use {
+	{
 		'mattn/emmet-vim',
-		commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d',
 		config = function()
 			vim.g.user_emmet_leader_key = '<C-q>'
 		end,
-	}
+	},
 
-	use {
+	{
 		'kylechui/nvim-surround',
-		tag = 'v1.0.0',
 		config = function()
 			require('nvim-surround').setup {}
 		end,
-	}
+	},
 
-	use {
+	{
 		'windwp/nvim-autopairs',
-		commit = '6b6e35fc9aca1030a74cc022220bc22ea6c5daf4',
 		config = function()
 			require('nvim-autopairs').setup {}
 		end,
-	}
+	},
 
-	use {
+	{
 		'numToStr/Comment.nvim',
-		commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6',
 		config = function()
 			require('Comment').setup()
 		end,
-	}
+	},
 
-	-- File explorer
-	use {
+	{
 		'nvim-neo-tree/neo-tree.nvim',
-		branch = 'v2.x',
-		requires = {
-			{ 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
-			{ 'nvim-tree/nvim-web-devicons', commit = '9061e2d355ecaa2b588b71a35e7a11358a7e51e1' }, -- not strictly required, but recommended
-			{ 'MunifTanjim/nui.nvim', commit = 'd12a6977846b2fa978bff89b439e509320854e10' },
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'nvim-tree/nvim-web-devicons',
+			'MunifTanjim/nui.nvim',
+		},
+		keys = {
+			{ '<Leader>ff', '<Cmd>Neotree reveal toggle right<CR>', desc = 'Toggle file tree (neo-tree)' },
 		},
 		config = function()
 			-- If you want icons for diagnostic errors, you'll need to define them somewhere:
@@ -494,72 +489,60 @@ packer.startup(function(use)
 			require('neo-tree').setup {
 				close_if_last_window = true,
 			}
-
-			vim.keymap.set(
-				'n',
-				'<Leader>ff',
-				'<Cmd>Neotree reveal toggle right<CR>',
-				{ desc = 'Toggle file tree (neo-tree)' }
-			)
 		end,
-	}
+	},
 
-	-- File finder
-	use {
+	{
 		'nvim-telescope/telescope.nvim',
-		tag = '0.1.0',
-		requires = { 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
-		config = function()
-			local t_builtin = require 'telescope.builtin'
-
-			vim.keymap.set('n', '<C-p>', function()
-				t_builtin.find_files()
-			end, {
-				desc = 'Open file finder (telescope)',
-			})
-
-			vim.keymap.set('n', '<C-t>', function()
-				t_builtin.live_grep()
-			end, { desc = 'Open text search (telescope)' })
-		end,
-	}
+		dependencies = { 'nvim-lua/plenary.nvim' },
+		keys = {
+			{ '<C-p>', '<Cmd>Telescope find_files<CR>', desc = 'Open file finder (telescope)' },
+			{ '<C-t>', '<Cmd>Telescope live_grep<CR>', desc = 'Open text search (telescope)' },
+		},
+	},
 
 	-- LSP + Tools + Debug + Auto-completion
-	use {
+	{
 		'neovim/nvim-lspconfig',
-		commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c',
-		requires = {
+		dependencies = {
 			-- Linter/Formatter
-			{ 'jose-elias-alvarez/null-ls.nvim', commit = '07d4ed4c6b561914aafd787453a685598bec510f' },
+			'jose-elias-alvarez/null-ls.nvim',
 			-- Tool installer
-			{ 'williamboman/mason.nvim', commit = 'd85d71e910d1b2c539d17ae0d47dad48f8f3c8a7' },
-			{ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d50f7a32d2f9057d636418a16843094b7c' },
-			{ 'WhoIsSethDaniel/mason-tool-installer.nvim', commit = '27f61f75a71bb3c2504a17e02b571f79cae43676' },
+			'williamboman/mason.nvim',
+			'williamboman/mason-lspconfig.nvim',
+			'WhoIsSethDaniel/mason-tool-installer.nvim',
 			-- UI/Aesthetics
-			{ 'glepnir/lspsaga.nvim', commit = '201dbbd13d6bafe1144475bbcae9efde224e07ec' },
-			{ 'j-hui/fidget.nvim', commit = '2cf9997d3bde2323a1a0934826ec553423005a26' },
+			'glepnir/lspsaga.nvim',
+			'j-hui/fidget.nvim',
+			-- Completion
+			'hrsh7th/cmp-nvim-lsp',
 		},
-	}
+	},
 
-	use {
+	{
 		'hrsh7th/nvim-cmp',
-		commit = 'aee40113c2ba3ab158955f233ca083ca9958d6f8',
-		requires = {
+		dependencies = {
 			-- Cmdline completions
-			{ 'hrsh7th/cmp-cmdline', commit = '8bc9c4a34b223888b7ffbe45c4fe39a7bee5b74d' },
+			'hrsh7th/cmp-cmdline',
 			-- Path completions
-			{ 'hrsh7th/cmp-path', commit = '91ff86cd9c29299a64f968ebb45846c485725f23' },
+			'hrsh7th/cmp-path',
 			-- Buffer completions
-			{ 'hrsh7th/cmp-buffer', commit = '3022dbc9166796b644a841a02de8dd1cc1d311fa' },
+			'hrsh7th/cmp-buffer',
 			-- LSP completions
-			{ 'hrsh7th/cmp-nvim-lsp', commit = '78924d1d677b29b3d1fe429864185341724ee5a2' },
-			{ 'onsails/lspkind-nvim', commit = 'c68b3a003483cf382428a43035079f78474cd11e' },
+			'hrsh7th/cmp-nvim-lsp',
+			'onsails/lspkind-nvim',
 			-- vnsip completions
-			{ 'hrsh7th/cmp-vsnip', commit = '1ae05c6c867d9ad44bce811056e861e0d5c531cb' },
-			{ 'hrsh7th/vim-vsnip', commit = 'ceeee48145d27f0b3986ab6f75f52a2449974603' },
-			{ 'rafamadriz/friendly-snippets', commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' },
+			'saadparwaiz1/cmp_luasnip',
+			'L3MON4D3/LuaSnip',
+			'rafamadriz/friendly-snippets',
 		},
+		event = 'InsertEnter',
 		config = function()
+			-- Luasnip
+			require('luasnip.loaders.from_vscode').lazy_load()
+			local luasnip = require 'luasnip'
+
+			-- Cmp
 			local cmp = require 'cmp'
 
 			vim.g.vsnip_filetypes = {
@@ -583,7 +566,7 @@ packer.startup(function(use)
 
 				snippet = {
 					expand = function(args)
-						vim.fn['vsnip#anonymous'](args.body)
+						require('luasnip').lsp_expand(args.body)
 					end,
 				},
 
@@ -594,8 +577,8 @@ packer.startup(function(use)
 					['<Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
-						elseif vim.fn['vsnip#available'](1) == 1 then
-							feedkey('<Plug>(vsnip-expand-or-jump)', '')
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
 						elseif has_words_before() then
 							cmp.complete()
 						else
@@ -606,8 +589,8 @@ packer.startup(function(use)
 					['<C-n>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
-						elseif vim.fn['vsnip#available'](1) == 1 then
-							feedkey('<Plug>(vsnip-expand-or-jump)', '')
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
 						elseif has_words_before() then
 							cmp.complete()
 						else
@@ -618,30 +601,30 @@ packer.startup(function(use)
 					['<S-Tab>'] = cmp.mapping(function()
 						if cmp.visible() then
 							cmp.select_prev_item()
-						elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-							feedkey('<Plug>(vsnip-jump-prev)', '')
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
 						end
 					end, { 'i', 's' }),
 
 					['<C-p>'] = cmp.mapping(function()
 						if cmp.visible() then
 							cmp.select_prev_item()
-						elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-							feedkey('<Plug>(vsnip-jump-prev)', '')
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
 						end
 					end, { 'i', 's' }),
 				},
 
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp', max_item_count = 10 },
-					{ name = 'vsnip', max_item_count = 5 }, -- For vsnip users.
+					{ name = 'luasnip', max_item_count = 5 },
 				}, {
 					{ name = 'buffer', max_item_count = 5 },
 					{ name = 'path', max_item_count = 5 },
 				}),
 
 				window = {
-					-- completion = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered 'rounded',
 				},
 
@@ -651,7 +634,7 @@ packer.startup(function(use)
 						menu = {
 							buffer = '[BUF]',
 							nvim_lsp = '[LSP]',
-							vsnip = '[SNIP]',
+							luasnip = '[SNIP]',
 							path = '[PATH]',
 						},
 					},
@@ -676,32 +659,17 @@ packer.startup(function(use)
 				}),
 			})
 		end,
-	}
+	},
 
-	-- Treesitter
-	use {
+	{
 		'nvim-treesitter/nvim-treesitter',
-		commit = '2072692aaa4b6da7c354e66c2caf4b0a8f736858',
 		-- We make treesitter extenstions optional so we can ensure it's loaded properly
 		-- before we call treesitter setup in `config` below using packadd
-		requires = {
-			{
-				'nvim-treesitter/nvim-treesitter-textobjects',
-				commit = '1f1cdc892b9b2f96afb1bddcb49ac1a12b899796',
-				opt = true,
-			},
-			{
-				'nvim-treesitter/nvim-treesitter-context',
-				commit = '0dd5eae6dbf226107da2c2041ffbb695d9e267c1',
-				opt = true,
-			},
-		},
-		run = function()
-			require('nvim-treesitter.install').update { with_sync = true }
+		dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+		build = function()
+			require('nvim-treesitter.install').update { with_sync = true }()
 		end,
 		config = function()
-			vim.cmd 'packadd nvim-treesitter-textobjects'
-
 			require('nvim-treesitter.configs').setup {
 				ensure_installed = {
 					'graphql',
@@ -719,15 +687,11 @@ packer.startup(function(use)
 				},
 			}
 		end,
-	}
+	},
 
-	-- UI
-	use {
+	{
 		'nvim-lualine/lualine.nvim',
-		commit = '3325d5d43a7a2bc9baeef2b7e58e1d915278beaf',
-		requires = {
-			{ 'nvim-tree/nvim-web-devicons', commit = '9061e2d355ecaa2b588b71a35e7a11358a7e51e1' },
-		},
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
 		config = function()
 			local function attached_lsp_clients()
 				local clients = vim.lsp.get_active_clients()
@@ -784,64 +748,62 @@ packer.startup(function(use)
 				extensions = {},
 			}
 		end,
-	}
+	},
 
-	use {
+	{
 		'akinsho/bufferline.nvim',
-		tag = 'v3.*',
-		requires = {
-			{ 'nvim-tree/nvim-web-devicons', commit = '9061e2d355ecaa2b588b71a35e7a11358a7e51e1' },
-		},
+		tag = 'v3.1.0',
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
 		config = function()
 			require('bufferline').setup {}
 		end,
-	}
+	},
 
-	use {
+	{
 		'lukas-reineke/indent-blankline.nvim',
-		commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6',
 		config = function()
 			vim.g.indent_blankline_show_first_indent_level = false
 		end,
-	}
+	},
 
-	use {
+	{
 		'folke/todo-comments.nvim',
-		commit = '530eb3a896e9eef270f00f4baafa102361afc93b',
-		requires = { 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' },
+		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
 			require('todo-comments').setup {}
 		end,
-	}
+	},
 
-	use {
+	{
 		'lewis6991/gitsigns.nvim',
 		branch = 'release',
 		config = function()
 			require('gitsigns').setup()
 		end,
-	}
+	},
 
-	-- Themes
-	use 'bluz71/vim-moonfly-colors'
-	use 'w3barsi/barstrata.nvim'
-	use 'LunarVim/darkplus.nvim'
-	use 'projekt0n/github-nvim-theme'
-	use 'navarasu/onedark.nvim'
-	use 'folke/tokyonight.nvim'
-	use { 'rose-pine/neovim', as = 'rose-pine' }
-	use { 'catppuccin/nvim', as = 'catppuccin' }
-
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if packer_bootstrap then
-		packer.sync()
-	end
-end)
-
-if packer_bootstrap then
-	return
-end
+	-- Colorschemes
+	{ 'bluz71/vim-moonfly-colors', lazy = true },
+	{ 'w3barsi/barstrata.nvim', lazy = true },
+	{ 'LunarVim/darkplus.nvim', lazy = true },
+	{ 'projekt0n/github-nvim-theme', lazy = true },
+	{ 'navarasu/onedark.nvim', lazy = true },
+	{ 'folke/tokyonight.nvim', lazy = true },
+	{ 'rose-pine/neovim', name = 'rose-pine', lazy = true },
+	{
+		'catppuccin/nvim',
+		lazy = true,
+		name = 'catppuccin',
+		config = function()
+			require('catppuccin').setup {
+				flavour = 'mocha',
+				custom_highlights = {
+					WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
+				},
+			}
+		end,
+	},
+}
 
 -- ============================================================================
 -- LSP Configuration
@@ -924,15 +886,6 @@ local function on_attach(client, bufnr)
 		vim.diagnostic.open_float { bufnr = bufnr, scope = 'line' }
 	end, { desc = 'Show LSP Line Diagnostic', buffer = bufnr })
 
-	-- LSP Saga doesn't show the source name, where the error is coming from
-	--
-	-- vim.keymap.set(
-	-- 	"n",
-	-- 	"<Leader>lw",
-	-- 	"<Cmd>Lspsaga show_line_diagnostics<CR>",
-	-- 	{ desc = "Show LSP line diagnostics", buffer = bufnr }
-	-- )
-
 	if
 		vim.tbl_contains(config.lsp.fmt_allowed_servers, client.name)
 		and client.server_capabilities.documentFormattingProvider
@@ -979,37 +932,25 @@ local lspconfig_node_options = {
 	root_dir = require('lspconfig.util').root_pattern { 'package.json', 'jsconfig.json', 'tsconfig.json' },
 }
 
-lspconfig.cssls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.html.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.jsonls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.svelte.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
 lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options, {
-	init_options = {
-		typescript = {
-			tsdk = string.format('%s/node_modules/typescript/lib', vim.fn.getcwd()),
-		},
-	},
-}))
+-- lspconfig.cssls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.html.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.jsonls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.svelte.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+-- lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options, {
+-- 	init_options = {
+-- 		typescript = {
+-- 			tsdk = string.format('%s/node_modules/typescript/lib', vim.fn.getcwd()),
+-- 		},
+-- 	},
+-- }))
 
 -- We want to only attach to a deno project when it matches only
 -- deno.json or deno.jsonc file
 local lspconfig_deno_options = { root_dir = require('lspconfig.util').root_pattern { 'deno.json', 'deno.jsonc' } }
 lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_deno_options))
-
--- Python
--- ---
-lspconfig.pylsp.setup(lspconfig_setup_defaults)
-
--- Go
--- ---
-lspconfig.gopls.setup(lspconfig_setup_defaults)
-
--- Rust
--- ---
-lspconfig.rust_analyzer.setup(lspconfig_setup_defaults)
 
 -- Null-ls Config
 -- ---
@@ -1078,18 +1019,4 @@ nls.setup {
 -- Tags: THEME, COLOR, COLORSCHEME
 -- ============================================================================
 
-pcall(function()
-	-- Theme configuration goes in here
-	-- ---
-
-	-- Example:
-	--
-	require('catppuccin').setup {
-		flavour = 'mocha',
-		custom_highlights = {
-			WinSeparator = { bg = 'NONE', fg = '#eeeeee' },
-		},
-	}
-
-	vim.cmd 'colorscheme catppuccin'
-end)
+pcall(vim.cmd, 'colorscheme catppuccin')

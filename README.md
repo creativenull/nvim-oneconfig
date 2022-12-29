@@ -1,4 +1,4 @@
-# Neovim configuration guide
+# Neovim configuration guide (with lazy.nvim)
 
 A clean, organized pre-configured neovim configuration guide in a single `init.lua`.
 
@@ -46,17 +46,14 @@ to have a better nvim experience.
 One such method is to navigate through different sections with search tags, that comes in the form of words attached
 to different sections in within comments. Using `/` and searching for the tag will jump you to that section.
 
-For example, if you want to navigate to the packer section to add additional plugins you would then search for `/PLUG`
+For example, if you want to navigate to the lazy.nvim section to add additional plugins you would then search for `/PLUG`
 and it will take you to that section. The same for when you want to configure some part of your LSP configuration, you
 would search for `/LSP` and you will be directed to the relevant LSP section of the code.
 
 ### Out-of-box LSP configurations + autocompletion and its plugins
 
-LSP configuration comes out-of-box and not tightly bound with packer.nvim, since packer compiles plugins to make them
-faster to load, this does not work well with LSP and its configuration.
-
-So LSP configurations are setup outside of packer and loaded by default. The advantage to this is that LSP is loaded
-and ready to work and not just lazy-loaded in order to save time.
+LSP configurations are setup outside of lazy.nvim and loaded by default. The advantage to this is that LSP is loaded
+and ready to work and not just lazy-loaded or whatever strategy a plugin manager in order to save time.
 
 ### Not built for speed but for efficiency
 
@@ -96,7 +93,7 @@ installed.
 
 Try to run `:TSUpdate` to get the latest parser for lua.
 
-### Saving file does not reload config, or run packer to install plugins
+### Saving file does not reload config, or run lazy.nvim to install plugins
 
 Make sure you follow the installation method above for it to work properly, if you ran with `ln -s ...` to link the
 directory to `~/.config/nvim` then it won't work for now.
