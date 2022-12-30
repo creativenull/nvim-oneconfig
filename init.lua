@@ -1033,4 +1033,4 @@ nls.setup {
 -- Tags: THEME, COLOR, COLORSCHEME
 -- ============================================================================
 
-pcall(vim.cmd, 'colorscheme catppuccin')
+pcall(vim.cmd, 'colorscheme tokyonight-night')
