@@ -23,6 +23,22 @@ local config = {
 	autocmd = {
 		group = vim.api.nvim_create_augroup('UserCustomGroup', {}),
 	},
+	treesitter = {
+		ensure_installed = {
+			'graphql',
+			'javascript',
+			'json',
+			'lua',
+			'help',
+			'prisma',
+			'tsx',
+			'typescript',
+		},
+		highlight = { enable = true },
+		textobjects = {
+			select = { enable = true },
+		},
+	},
 	lsp = {
 		fmt_on_save = true,
 		fmt_opts = { async = false, timeout = 2500 },
@@ -669,22 +685,7 @@ require('lazy').setup {
 			require('nvim-treesitter.install').update { with_sync = true }()
 		end,
 		config = function()
-			require('nvim-treesitter.configs').setup {
-				ensure_installed = {
-					'graphql',
-					'javascript',
-					'json',
-					'lua',
-					'help',
-					'prisma',
-					'tsx',
-					'typescript',
-				},
-				highlight = { enable = true },
-				textobjects = {
-					select = { enable = true },
-				},
-			}
+			require('nvim-treesitter.configs').setup(config.treesitter)
 		end,
 	},
 
