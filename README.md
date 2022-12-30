@@ -6,6 +6,9 @@ A clean, organized pre-configured neovim configuration guide in a single `init.l
 
 If you want to start from scratch but with some helper functions you can try out [`blank.lua` file](./blank.lua).
 
+Check [lazy](https://github.com/creativenull/nvim-oneconfig/tree/lazy) branch on using lazy.nvim instead of
+packer.nvim as package manager.
+
 This `init.lua` comes with the following plugins pre-configured to work, for a more detailed list check the `init.lua`
 and search for `/PLUG`:
 
